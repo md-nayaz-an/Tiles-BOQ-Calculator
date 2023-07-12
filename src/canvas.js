@@ -1,7 +1,7 @@
 import { Stage, Layer, Rect } from "react-konva";
 import { useEffect, useState } from "react";
 export default function Canvas(props) {
-  var scaleX,scaleY;
+  var scaleVar;
 
   const padding = 5;
   
@@ -9,7 +9,7 @@ export default function Canvas(props) {
     h: props.canvaProp.h - padding * 2,
     w: props.canvaProp.w - padding * 2
   })
-  const [scale, setScale] = useState({x: 1, y: 1});
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     setCanvaProp({
@@ -17,17 +17,15 @@ export default function Canvas(props) {
       w: props.canvaProp.w - padding * 2
     });
     if(props.state.height > props.state.width) {
-      scaleY = canvaProp.h / props.state.height;
-      scaleX = canvaProp.w / props.canvaProp.h * scaleY;
+      scaleVar = canvaProp.h / props.state.height;
     }
     else {
-      scaleX = canvaProp.w / props.state.width;
-      scaleY = canvaProp.h / props.canvaProp.w * scaleX;
+      scaleVar = canvaProp.w / props.state.width;
     }
-    setScale({x: scaleX, y: scaleY});
+    setScale(scaleVar);
 
     console.log(props.canvaProp);
-    console.log(scaleX * props.state.width, scaleY * props.state.height);
+    console.log(scale * props.state.width, scale * props.state.height);
     
     
     return
@@ -46,17 +44,17 @@ export default function Canvas(props) {
       <Rect
           x={5}
           y={5}
-          width={props.state.width * scale.x}
-          height={props.state.height * scale.y}
+          width={props.state.width * scale}
+          height={props.state.height * scale}
           fill="#c5c7c7"
           stroke="#646666"
       />
       {props.tileRectComp.map((item) => {
         return <Rect
-          x={padding + item.x * scale.x}
-          y={padding + item.y * scale.y}
-          width={item.w * scale.x}
-          height={item.h * scale.y}
+          x={padding + item.x * scale}
+          y={padding + item.y * scale}
+          width={item.w * scale}
+          height={item.h * scale}
           fill="#8afff7"
           stroke="#646666"
         />
